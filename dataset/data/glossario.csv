@@ -1,5 +1,6 @@
 ﻿nome;descricao
 Ação;É o instrumento de programação para alcançar o objetivo de um programa. A ação pode ser um projeto, atividade das quais resulta a entrega de um produto (bem, serviço ou transferência financeira) necessário ao enfrentamento da causa do problema, ou operação especial. O produto da ação será ofertado à sociedade, à própria administração pública ou a outras entidades civis ou governamentais. Para mais informações, consulte a Portaria Ministerial n.º 42/99.
+Acordo de Leniência;Acordo celebrado com pessoas jurídicas responsáveis por atos lesivos (ex.: contra a administração pública), com vistas à isenção ou à atenuação das sanções, desde que colaborem efetivamente com as investigações.
 Adjudicação;No processo licitatório, é a manifestação oficial pela proposta mais vantajosa para a Administração Pública. Fonte: Tesouro Nacional
 Administração Direta;É quando o Estado é, ao mesmo tempo, titular e prestador do serviço. É o serviço que o Poder Público presta por seus próprios órgãos em seu nome e sob sua exclusiva responsabilidade.
 Administração Indireta;É o serviço prestado por pessoa jurídica criada pelo poder público para exercer tal atividade. No âmbito estadual estão o Instituto Estadual de Florestas, Universidade Estadual de Montes Claros, Companhia de Saneamento de Minas Gerais, etc.
@@ -30,7 +31,6 @@ Concorrência;Modalidade de licitação entre quaisquer interessados que, na fas
 Concurso (licitação);Modalidade de licitação entre quaisquer interessados, para a escolha de trabalho técnico ou artístico, mediante a instituição de prêmio aos vencedores. Fonte: Tesouro Nacional
 Contrapartida;Recursos que o devedor se compromete, contratualmente, a aplicar em um determinado projeto. A cobertura de contrapartida pode efetivar-se por meio de outro empréstimo, receita própria ou dotação orçamentária. Fonte: Câmara dos Deputados
 Contratado;Nome da pessoa física ou jurídica contratada para prestar um serviço ou entregar bens materiais ao Estado.
-Contratados;"Servidores contratados temporariamente para o serviço público, vale dizer, o ""exercício regular"" da função e/ou atividade desses servidores, dispensa a exigência do concurso de provas, ou de provas e títulos, constituindo-se, destarte, em uma exceção à regra, que é o concurso público."
 Contratante;Órgão ou entidade responável pela contratação de uma pessoa física ou jurídica para a prestação de um serviço ou entrega de bens ao Estado.
 Contrato;Acordo ou ajuste em que as partes tenham interesses diversos, normalmente opostos, transferindo entre si algum direito ou se sujeitando a alguma obrigação. Fonte: Portal da Transparência Federal
 Contribuições de Melhorias;É a cobrança de um determinado valor aos indivíduos que foram beneficiados por uma obra realizada pelo Poder Público. Tributo instituído para fazer face ao custo de obras públicas de que decorra valorização imobiliária, pago pelo Contribuinte que obtiver uma vantagem econômica particular. Tem como limite total a Despesa realizada e como limite individual, para o contribuinte, o acréscimo de valor que da obra resultar para cada imóvel beneficiado. Fonte: Câmara dos Deputados
@@ -46,6 +46,7 @@ Crédito Inicial;Valor monetário do orçamento instituído pela Lei Orçamentá
 Crédito Orçamentário;Quando o governo prevê os recursos financeiros para os diversos segmentos da sua administração realizarem seus programas, projetos ou atividades refere-se a esses recursos como sendo crédito orçamentário, ou seja, o crédito previsto no orçamento. Fonte: Portal da Transparência do ES
 Crédito Suplementar;Modalidade de crédito adicional destinado ao reforço de dotação já existente no orçamento. Tal autorização pode constar da própria lei orçamentária.
 Credor;Entidades, pessoas ou empresas nacionais ou estrangeiras, bem como governos estrangeiros com os quais o governo e empresas estatais contraem dívidas.
+Dados Abertos;Dados acessíveis ao público, representados em meio digital, estruturados em formato aberto, processáveis por máquina e disponibilizados sob licença aberta que permita sua livre utilização.
 DAE;Documento de Arrecadação Estadual
 Data de Exoneração;Data de publicação da exoneração, no Diário Oficial do Estado.
 Data de Nomeação;Data de publicação da nomeação do candidato classificado, no Diário Oficial do Estado.
@@ -91,6 +92,7 @@ Exoneração;Servidores que solicitam o desligamento do serviço público após 
 Extrato;É dispensa de servidor a pedido ou por motivo previsto em lei, ou ainda, por conveniência da Administração (ad nutum).
 Favorecido;Órgãos, Entidades, Empresas Privadas e Pessoas Físicas que receberam recursos públicos federais, independentemente da origem desses valores.
 Fonte de Recursos;Constituem-se de determinados agrupamentos de naturezas de receitas, atendendo a uma determinada regra de destinação legal, e servem para indicar como são financiadas as despesas orçamentárias. Fonte: Senado Federal.
+Formato Aberto;Formato de arquivo não proprietário, cuja especificação esteja documentada publicamente e seja de livre conhecimento e implementação, livre de patentes ou qualquer outra restrição legal quanto à sua utilização.
 Frota;Veículos terrestres que constam do patrimônio do Estado.
 Função;A função pode ser traduzida como o maior nível de agregação das diversas áreas de atuação do setor público. Reflete a competência institucional do órgão, como, por exemplo, cultura, educação, saúde, defesa, etc.
 Fundação Pública;Entidade dotada de personalidade jurídica própria, sem fins lucrativos, criada por lei para o desenvolvimento de atividades de interesse público, como educação, cultura e pesquisa, com autonomia administrativa, patrimônio próprio e funcionamento custeado, basicamente, por recursos do Poder Público, ainda que sob forma de prestação de serviços. Fonte: Tesouro Nacional
@@ -115,8 +117,12 @@ Item de Despesa;É o desdobramento suplementar dos elementos de despesa para ate
 Item de Material/Serviço;(Remissão para Material/Serviço)
 Juros e Encargos da Dívida;Grupo de natureza de despesa, identificado pelo dígito “2”, no qual são orçados o adimplemento de juros, comissões, dívida pública mobiliária e despesas com operações de crédito internas e externas. Fonte: Senado Federal
 Lançamento da Receita;Ato administrativo que visa liquidar a obrigação tributária, através da identificação do fato gerador ocorrido, determinação do sujeito passivo, mensuração da base de cálculo e aplicação de alíquota. Fonte: Tesouro Nacional
+Lei Anticorrupção (Lei nº 12.846/2013);Diploma legal que dispõe sobre a responsabilização objetiva administrativa e civil de pessoas jurídicas pela prática de atos contra a administração pública, nacional ou estrangeira.
 Lei de Diretrizes Orçamentárias;Compreende as metas e prioridades da administração pública estadual, incluindo as despesas de capital para o exercício financeiro subsequente, orienta a elaboração da lei orçamentária anual, dispõe sobre as alterações na legislação tributária e estabelece a política de aplicação das agências financeiras oficiais de fomento. Fonte:Planejamento MG
+Lei de Licitações (Lei nº 14.133/2021);Nova lei que estabelece normas gerais de licitação e contratação para a Administração Pública direta, autárquica e fundacional da União, Estados, Distrito Federal e Municípios.
+Lei de Responsabilidade Fiscal (LC nº 101/2000);Define as responsabilidades e deveres do administrador público em relação aos orçamentos, limites de gastos com pessoal e criação de despesas, introduzindo a disciplina fiscal.
 Lei Orçamentária Anual;Lei de natureza especial, por meio da qual são previstas as receitas e autorizadas as despesas públicas. Fonte: Planejamento MG
+Linguagem Cidadã;Na comunicação da Administração com o cidadão, a linguagem deve ser clara e objetiva. Termos técnicos devem ser traduzidos para o vocabulário do dia a dia para garantir a leitura fácil de informações e dados.
 Liquidação;Segundo estágio da execução da despesa pública. Esse estágio consiste na verificação do direito adquirido pelo credor, tendo por base os títulos e documentos comprobatórios do respectivo crédito. É nesse segundo estágio da execução da despesa que será cobrada a prestação dos serviços ou a entrega dos bens, ou ainda, a realização da obra. Envolve, portanto, todos os atos de verificação e conferência, desde a entrega do material ou a prestação do serviço até o reconhecimento da despesa. Fonte: Portal da Transparência Federal
 Lotação;Unidade de trabalho do agente público
 Lote de Vaga;Região, cidade ou regional onde se encontra a vaga disponível no concurso.
@@ -126,6 +132,7 @@ Material/Serviço;Terceiro nível de especificação de materiais e serviços. D
 Meio de Transporte;Meio de transporte utilizado pelo servidor ou colaborador eventual na viagem a trabalho. Ex: aéreo, rodoviário, veículo oficial, veículo particular ou ferroviário.
 Meta Física;Quantidade do produto que será ofertado para a sociedade.
 Modalidade de Aplicação;Informação gerencial que complementa a natureza da despesa com a finalidade de indicar se os recursos são aplicados diretamente por órgãos ou entidades no âmbito da mesma esfera de governo ou por outro ente da federação e suas respectivas entidades. Desse modo, objetiva, principalmente, possibilitar a eliminação da dupla contagem de recursos transferidos ou descentralizados.
+Modalidade de Licitação;Concorrência, Tomada de Preços, Convite, Concurso, Leilão, previstas na Lei nº 8.666/1993, e Pregão, prevista na Lei nº 10.520/2002 (e agora consolidadas na nova Lei 14.133/2021).
 Município;Um dos entes da Federação. Não possui soberania, que é a prerrogativa de representação do país no exterior e perante órgãos internacionais para celebração de acordos e tratados em que o Brasil tenha interesse, mas possui autonomia organizacional, financeira e orçamentária, nos termos da Constituição e pode celebrar convênios com outros entes da federação e órgãos da administração indireta.
 Natureza da Despesa;A natureza da despesa é uma categorização que identifica o tipo de gasto realizado, com uma perspectiva de forma, mas também com uma visão econômica/contábil/financeira. Ela ajuda, por exemplo, a entender se o governo está investindo, se está endividado, se gasta muito com a folha de pessoal. Também ajuda a entender como os recursos serão aplicados: com serviços, obras ou compras, por exemplo. Fonte: Portal da Transparência do Governo Federal
 Nível de Ingresso no Concurso Público;Carreira que o candidato irá ingressar.
@@ -179,6 +186,7 @@ Remuneração;É o vencimento do cargo efetivo, acrescido das vantagens pecuniá
 Restos a Pagar;Despesas empenhadas, mas não pagas, até 31 de dezembro, distinguindo-se as processadas (despesas empenhadas e liquidadas) das não processadas (despesas apenas empenhadas e aguardando a liquidação). Fonte: Portal da Transparência do Governo Federal
 Rubrica de Receita;Classificação orçamentária do 4º nível de identificação da receita disponível até 2017. Detalha sua origem (procedência) e sua espécie. Ex: Receita Corrente/Tributária/Impostos sobre o patrimônio e Renda.
 SCDP;Sistema de Concessão de Diárias e Passagens.
+Serviço de Informação ao Cidadão (SIC);Unidade responsável por atender e orientar o público sobre o acesso à informação, além de gerenciar os pedidos de acesso feitos com base na LAI .
 Servidor Contratado;"Servidores contratados temporariamente para o ""exercício regular"" de função e/ou atividade pública. São dispensados da exigência de concurso público, constituindo-se, uma exceção à regra, que é o concurso público."
 SIAFI;É o Sistema Integrado de Administração Financeira – SIAFI–MG, implantado por meio do Decreto MG nº. 35.304/1993, de utilização obrigatória pelos órgãos do Poder Executivo Estadual, tendo como objetivo geral, buscar a gestão eficiente dos recursos públicos do Estado, mediante a integração automatizada dos processos de elaboração e execução orçamentária, administração e execução financeira, registros contábeis e gestão do patrimônio público. Fonte: SIAFI/MG
 Subalínea da Receita;Classificação orçamentária do 6º nível de identificação da receita disponível até 2017. Detalha sua origem, espécie e rubrica e especifica a alínea. Ex: Receita Corrente/.../Imposto de Renda/Pessoa física.
@@ -198,6 +206,8 @@ Transferências de Capital;Dotações para investimentos ou inversões financeir
 Transferências Intergovernamentais;Transferências feitas entre a União, Estados, Distrito Federal e Municípios. Fonte: Senado Federal
 Transferências Intragovernamentais;Transferências feitas no âmbito de cada governo. Podem ser a autarquias, fundações, fundos, empresas e a outras entidades autorizadas em legislação especifica. Fonte: Tesouro Nacional
 Transferências Voluntárias;Compreende a entrega de recursos correntes ou de capital a outro ente da Federação, a título de cooperação, auxílio ou assistência financeira, que não decorra de determinação constitucional ou legal ou se destine ao Sistema Único de Saúde.
+Transparência Ativa;Divulgação de informações pela Administração Pública por determinação legal, independente de solicitação da sociedade.
+Transparência Proativa;Divulgação de informações pela Administração Pública por iniciativa própria, de forma espontânea, independentemente de qualquer solicitação da sociedade.
 Unidade de Medida;Padrão utilizado para mensurar o bem ou serviço comprado ou que identifica uma meta física.
 Unidade Executora;Unidades administrativas investidas de poderes para gerir recursos orçamentários e financeiros próprios ou sob descentralização. Fonte: Decreto Estadual 35.305/1993.
 Unidade Orçamentária;Órgãos e entidades a que o Orçamento consigna dotações específicas para a realização de seus programas de trabalho. Fonte: Decreto Estadual 35.305/1993.
