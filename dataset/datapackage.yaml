@@ -1,0 +1,22 @@
+name: glossario
+owner_org: ''
+profile: data-package
+resources:
+  - description: Insira a descrição/explicação detalhada deste recurso.
+    dialect:
+      delimiter: ;
+    encoding: utf-8-sig
+    format: csv
+    hashing: md5
+    name: glossario
+    path: data/glossario.csv
+    profile: tabular-data-resource
+    schema:
+      fields:
+        - name: nome
+          type: string
+        - name: descricao
+          type: string
+    scheme: file
+    title: Insira um título humanamente legível para este recurso.
+title: Glossario
