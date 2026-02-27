@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossário · Transparência MG</title>
+    
+    <!-- ==================== ESTILOS E BIBLIOTECAS ==================== -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bibliotecas para PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    
+    <style>
+        /* ==================== MESMO TEMA DO DASHBOARD ANTERIOR ==================== */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #EEEFF5;
+            padding-bottom: 15px;
+            overflow-x: hidden;
+        }
+        :root {
+            --primary-dark: #29435A;
+            --primary-darker: #132837;
+            --accent-red: #B93C42;
+            --accent-bright: #DB233F;
+            --background-light: #EEEFF5;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent-red);
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(to right, var(--primary-darker), var(--primary-dark));
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary-custom:hover {
+            background: linear-gradient(to right, var(--accent-red), #A32C32);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(185, 60, 66, 0.2);
+            color: white;
+        }
+
+        .btn-secondary-custom {
+            background: white;
+            border: 2px solid var(--primary-darker);
+            color: var(--primary-darker);
+            padding: 8px 18px;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary-custom:hover {
+            background-color: var(--primary-darker);
+            color: white;
+        }
+
+        .btn-export {
+            background: white;
+            border: 2px solid var(--primary-darker);
+            color: var(--primary-darker);
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-export:hover {
+            background: var(--primary-darker);
+            color: white;
+        }
+
+        .nav-tabs-container {
+            background: white;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+            margin-top: 10px;
+        }
+
+        .nav-tabs .nav-link {
+            border: none !important;
+            border-radius: 6px !important;
+            padding: 10px 15px !important;
+            font-weight: 600;
+            color: var(--primary-dark) !important;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            display: inline-flex !important;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-darker) 100%) !important;
+            color: white !important;
+        }
+
+        .table-fixed-header-container {
+            max-height: 600px;
+            overflow: auto;
+            border-radius: 8px;
+        }
+
+        .table thead th {
+            background-color: var(--primary-dark) !important;
+            color: white !important;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            font-weight: 600;
+            padding: 14px 10px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .descricao-cell {
+            font-size: 13px;
+            color: #2c3e50;
+            white-space: normal;
+            word-wrap: break-word;
+            max-width: 500px;
+            line-height: 1.5;
+        }
+
+        .data-atualizacao-box {
+            background: white;
+            border-radius: 8px;
+            padding: 8px 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .share-dropdown { position: relative; display: inline-block; }
+        .share-options {
+            display: none; position: absolute; right: 0; top: 100%; background-color: white;
+            min-width: 220px; box-shadow: 0 8px 16px rgba(0,0,0,0.15); border-radius: 8px;
+            padding: 8px; z-index: 1000; border: 1px solid #dee2e6;
+        }
+        .share-options.show { display: block; }
+        .share-options a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--primary-dark); text-decoration: none; }
+        .share-options a:hover { background-color: #EEEFF5; color: var(--accent-red); }
+
+        .intro-text {
+            background: white;
+            border-radius: 10px;
+            padding: 20px 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary-dark);
+            font-size: 14px;
+            text-align: justify;
+            color: #1e2b37;
+        }
+        
+        .badge-termos {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container dashboard-spacing py-3">
+
+    <!-- ==================== MENU DE NAVEGAÇÃO ==================== -->
+    <div class="nav-tabs-container">
+        <ul class="nav nav-tabs" id="glossarioTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista" type="button" role="tab">
+                    <i class="material-icons">menu_book</i> Lista Completa
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="estatisticas-tab" data-bs-toggle="tab" data-bs-target="#estatisticas" type="button" role="tab">
+                    <i class="material-icons">insights</i> Estatísticas
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ==================== DATA DE ATUALIZAÇÃO ==================== -->
+    <div class="d-flex justify-content-start mb-3">
+        <div class="data-atualizacao-box">
+            <i class="material-icons">update</i> Atualizado em: <span id="data-atualizacao-header">Carregando...</span>
+        </div>
+    </div>
+
+    <!-- ==================== TEXTO INTRODUTÓRIO ==================== -->
+    <div class="intro-text">
+        <p style="margin:0; line-height:1.7;">
+            <i class="material-icons me-2" style="color: var(--accent-red); vertical-align: middle;">info</i>
+            Este glossário reúne os principais termos e conceitos utilizados nos portais de transparência, orçamento público, licitações, contratos e gestão governamental. As definições foram elaboradas com base em fontes oficiais como Tesouro Nacional, Câmara dos Deputados e legislação vigente. Utilize a busca ou o filtro por letra para navegar pelos verbetes.
+        </p>
+    </div>
+
+    <!-- ==================== CONTEÚDO DAS ABAS ==================== -->
+    <div class="tab-content" id="glossarioTabsContent">
+        
+        <!-- ==================== ABA 1: LISTA COMPLETA ==================== -->
+        <div class="tab-pane fade show active" id="lista" role="tabpanel">
+            
+            <!-- Filtros -->
+            <div class="dashboard-card">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="filter-label">Filtrar por letra inicial</label>
+                        <select class="form-select" id="filtroLetra">
+                            <option value="all">Todas as letras (A-Z)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="filter-label">Buscar termo ou descrição</label>
+                        <input type="text" class="form-control" id="filtroTexto" placeholder="Ex: licitação, orçamento, empenho...">
+                    </div>
+                    <div class="col-md-2 d-flex gap-2">
+                        <button class="btn-primary-custom" id="btnPesquisar">
+                            <i class="material-icons">search</i>
+                        </button>
+                        <button class="btn-secondary-custom" id="btnLimpar">
+                            <i class="material-icons">clear</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- barra de ações: export, compartilhar, itens por página -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center bg-white p-3 rounded-3 shadow-sm mb-3">
+                <div class="d-flex gap-2">
+                    <button class="btn-export" id="exportCSV"><i class="material-icons me-1">description</i> CSV</button>
+                    <button class="btn-export" id="exportPDF"><i class="material-icons me-1">print</i> PDF</button>
+                    <div class="share-dropdown">
+                        <button class="btn-export" id="shareButton"><i class="material-icons me-1">share</i> Compartilhar</button>
+                        <div class="share-options" id="shareOptions">
+                            <a href="#" onclick="copiarLink(event)"><i class="fas fa-link"></i> Copiar Link</a>
+                            <a href="#" onclick="compartilharFacebook(event)"><i class="fab fa-facebook-f"></i> Facebook</a>
+                            <a href="#" onclick="compartilharTwitter(event)"><i class="fab fa-twitter"></i> Twitter</a>
+                            <a href="#" onclick="compartilharWhatsApp(event)"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <span style="font-size:12px; font-weight:600; color:var(--primary-dark);">Itens p/ página:</span>
+                        <select id="itemsPerPage" class="form-select form-select-sm" style="width:70px; border:2px solid var(--primary-dark);">
+                            <option value="10">10</option><option value="25">25</option><option value="50" selected>50</option><option value="100">100</option>
+                        </select>
+                    </div>
+                    <span class="badge-termos" id="totalRegistros">0 termos</span>
+                </div>
+            </div>
+
+            <!-- Tabela -->
+            <div class="table-container bg-white rounded-3 shadow-sm">
+                <div class="table-fixed-header-container">
+                    <table class="table table-hover" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Termo</th>
+                                <th style="width: 75%;">Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaGlossarioBody"></tbody>
+                    </table>
+                </div>
+                <!-- Paginação -->
+                <div class="d-flex justify-content-between align-items-center p-3 border-top">
+                    <div class="pagination-info" id="paginationInfo">Mostrando 0-0 de 0 registros</div>
+                    <nav><ul class="pagination mb-0" id="paginationGlossario"></ul></nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== ABA 2: ESTATÍSTICAS ==================== -->
+        <div class="tab-pane fade" id="estatisticas" role="tabpanel">
+            <div class="row">
+                <!-- card total -->
+                <div class="col-md-4 mb-3">
+                    <div class="bg-white p-4 rounded-3 shadow-sm h-100">
+                        <h5 class="fw-bold mb-3"><i class="material-icons me-2" style="color:var(--accent-red);">abc</i> Total de termos</h5>
+                        <span class="display-4" id="statsTotal">0</span>
+                        <p class="text-muted mt-2">verbetes cadastrados</p>
+                    </div>
+                </div>
+                <!-- card primeiras letras -->
+                <div class="col-md-8 mb-3">
+                    <div class="bg-white p-4 rounded-3 shadow-sm h-100">
+                        <h5 class="fw-bold mb-3"><i class="material-icons me-2" style="color:var(--accent-red);">sort_by_alpha</i> Distribuição por letra inicial</h5>
+                        <div id="letrasContainer" class="d-flex flex-wrap gap-2" style="max-height: 200px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- últimos termos adicionados / amostra -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="bg-white p-4 rounded-3 shadow-sm">
+                        <h5 class="fw-bold mb-3"><i class="material-icons me-2" style="color:var(--accent-red);">history</i> Exemplos de verbetes</h5>
+                        <div class="row" id="exemplosContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); display:none; justify-content:center; align-items:center; z-index:9999;">
+    <div class="spinner" style="width:50px; height:50px; border:4px solid rgba(41,67,90,0.1); border-radius:50%; border-top-color:var(--accent-red); animation:spin 1s linear infinite;"></div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    (function() {
+        // ==================== CONFIGURAÇÕES ====================
+        const GITHUB_CSV_URL = 'https://raw.githubusercontent.com/transparencia-mg/glossario/main/dataset/data/glossario.csv';
+        let glossarioData = [];
+        let filteredData = [];
+        let currentPage = 1;
+        let itemsPerPage = 50;
+
+        // elemento data atualização
+        document.getElementById('data-atualizacao-header').innerText = new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR');
+
+        // ==================== CARREGAR DADOS DO GITHUB ====================
+        async function carregarDados() {
+            showLoading(true);
+            try {
+                const response = await fetch(GITHUB_CSV_URL);
+                if (!response.ok) throw new Error('Erro ao carregar CSV');
+                const csvText = await response.text();
+                
+                // Parse com PapaParse (delimitador ';')
+                Papa.parse(csvText, {
+                    delimiter: ';',
+                    header: true,
+                    skipEmptyLines: true,
+                    encoding: 'UTF-8',
+                    complete: function(results) {
+                        // Mapeia as colunas 'nome' e 'descricao'
+                        glossarioData = results.data
+                            .filter(row => row.nome && row.nome.trim() !== '' && row.descricao && row.descricao.trim() !== '')
+                            .map((row, idx) => ({
+                                id: idx + 1,
+                                nome: row.nome.trim(),
+                                descricao: row.descricao.trim()
+                            }));
+                        
+                        filteredData = [...glossarioData];
+                        popularFiltroLetra();
+                        renderTabela();
+                        atualizarEstatisticas();
+                        showLoading(false);
+                    },
+                    error: function(err) {
+                        console.error('Erro no parse:', err);
+                        fallbackData(); // em caso de erro, usa dados mínimos de exemplo
+                    }
+                });
+            } catch (error) {
+                console.error('Falha na requisição:', error);
+                fallbackData();
+            }
+        }
+
+        // fallback (caso o CSV não carregue)
+        function fallbackData() {
+            glossarioData = [
+                { id:1, nome:"Exemplo de termo", descricao:"Este é um verbete de exemplo caso o CSV não carregue. Atualize a página." }
+            ];
+            filteredData = [...glossarioData];
+            popularFiltroLetra();
+            renderTabela();
+            atualizarEstatisticas();
+            showLoading(false);
+        }
+
+        // ==================== POPULAR FILTRO LETRA ====================
+        function popularFiltroLetra() {
+            const letrasSet = new Set();
+            glossarioData.forEach(item => {
+                if (item.nome && item.nome.length > 0) {
+                    letra = item.nome.charAt(0).toUpperCase();
+                    if (letra.match(/[A-Z]/)) letrasSet.add(letra);
+                }
+            });
+            const letras = Array.from(letrasSet).sort();
+            const select = document.getElementById('filtroLetra');
+            select.innerHTML = '<option value="all">Todas as letras (A-Z)</option>';
+            letras.forEach(letra => {
+                const opt = document.createElement('option');
+                opt.value = letra; 
+                opt.textContent = letra;
+                select.appendChild(opt);
+            });
+        }
+
+        // ==================== RENDERIZAÇÃO DA TABELA ====================
+        function renderTabela() {
+            const tbody = document.getElementById('tabelaGlossarioBody');
+            if (!tbody) return;
+            const total = filteredData.length;
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = Math.min(start + itemsPerPage, total);
+            const pageData = filteredData.slice(start, end);
+
+            tbody.innerHTML = pageData.map(item => `
+                <tr>
+                    <td class="fw-bold">${item.nome}</td>
+                    <td class="descricao-cell">${item.descricao}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('totalRegistros').innerText = total + (total === 1 ? ' termo' : ' termos');
+            document.getElementById('paginationInfo').innerText = `Mostrando ${start+1}-${end} de ${total} registros`;
+            renderPaginacao(Math.ceil(total / itemsPerPage));
+        }
+
+        function renderPaginacao(totalPages) {
+            let html = `<li class="page-item ${currentPage===1?'disabled':''}"><a class="page-link" href="#" onclick="mudarPagina(${currentPage-1});return false;">&laquo;</a></li>`;
+            let start = Math.max(1, currentPage-2);
+            let end = Math.min(totalPages, start+4);
+            if (end-start <4) start = Math.max(1, end-4);
+            for (let i=start; i<=end; i++) {
+                html += `<li class="page-item ${i===currentPage?'active':''}"><a class="page-link" href="#" onclick="mudarPagina(${i});return false;">${i}</a></li>`;
+            }
+            html += `<li class="page-item ${currentPage===totalPages?'disabled':''}"><a class="page-link" href="#" onclick="mudarPagina(${currentPage+1});return false;">&raquo;</a></li>`;
+            document.getElementById('paginationGlossario').innerHTML = html;
+        }
+
+        window.mudarPagina = function(page) {
+            let totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderTabela();
+        };
+
+        // ==================== FILTROS ====================
+        function aplicarFiltros() {
+            const letraSel = document.getElementById('filtroLetra').value;
+            const texto = document.getElementById('filtroTexto').value.toLowerCase();
+            
+            filteredData = glossarioData.filter(item => {
+                if (letraSel !== 'all') {
+                    if (!item.nome || item.nome.charAt(0).toUpperCase() !== letraSel) return false;
+                }
+                if (texto) {
+                    const nomeMatch = item.nome && item.nome.toLowerCase().includes(texto);
+                    const descMatch = item.descricao && item.descricao.toLowerCase().includes(texto);
+                    if (!nomeMatch && !descMatch) return false;
+                }
+                return true;
+            });
+            
+            currentPage = 1;
+            renderTabela();
+            // atualiza estatísticas se a aba estatísticas estiver ativa
+            if (document.getElementById('estatisticas-tab').classList.contains('active')) atualizarEstatisticas();
+        }
+
+        document.getElementById('btnPesquisar').addEventListener('click', aplicarFiltros);
+        document.getElementById('btnLimpar').addEventListener('click', function() {
+            document.getElementById('filtroLetra').value = 'all';
+            document.getElementById('filtroTexto').value = '';
+            aplicarFiltros();
+        });
+
+        document.getElementById('itemsPerPage').addEventListener('change', function(e) {
+            itemsPerPage = parseInt(e.target.value);
+            currentPage = 1;
+            renderTabela();
+        });
+
+        // ==================== ESTATÍSTICAS ====================
+        function atualizarEstatisticas() {
+            const total = glossarioData.length;
+            document.getElementById('statsTotal').innerText = total;
+
+            // distribuição por letra
+            const letrasMap = {};
+            glossarioData.forEach(item => {
+                if (item.nome && item.nome.length > 0) {
+                    letra = item.nome.charAt(0).toUpperCase();
+                    if (letra.match(/[A-Z]/)) letrasMap[letra] = (letrasMap[letra] || 0) + 1;
+                }
+            });
+            const sortedLetras = Object.keys(letrasMap).sort();
+            const containerLetras = document.getElementById('letrasContainer');
+            containerLetras.innerHTML = sortedLetras.map(letra => 
+                `<span class="badge bg-secondary p-2" style="font-size:14px;">${letra}: ${letrasMap[letra]}</span>`
+            ).join('');
+
+            // 6 exemplos aleatórios
+            const exemplos = glossarioData.slice(0, 6); // pega os primeiros como amostra
+            const containerEx = document.getElementById('exemplosContainer');
+            containerEx.innerHTML = exemplos.map(item => `
+                <div class="col-md-4 col-6 mb-3">
+                    <div class="p-3 border rounded h-100" style="background:#f9f9fc;">
+                        <strong>${item.nome}</strong>
+                        <p class="small text-muted mt-2" style="max-height:80px; overflow:hidden;">${item.descricao.substring(0,80)}…</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('estatisticas-tab').addEventListener('click', function() {
+            setTimeout(atualizarEstatisticas, 100);
+        });
+
+        // ==================== COMPARTILHAMENTO ====================
+        window.toggleShare = function() {
+            document.getElementById('shareOptions').classList.toggle('show');
+        };
+        window.copiarLink = function(e) { 
+            e.preventDefault(); 
+            navigator.clipboard.writeText(window.location.href); 
+            alert('Link copiado!'); 
+            document.getElementById('shareOptions').classList.remove('show'); 
+        };
+        window.compartilharFacebook = function(e){ 
+            e.preventDefault(); 
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`); 
+        };
+        window.compartilharTwitter = function(e){ 
+            e.preventDefault(); 
+            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`); 
+        };
+        window.compartilharWhatsApp = function(e){ 
+            e.preventDefault(); 
+            window.open(`https://wa.me/?text=${encodeURIComponent(window.location.href)}`); 
+        };
+
+        document.getElementById('shareButton')?.addEventListener('click', (e) => { e.preventDefault(); toggleShare(); });
+        window.addEventListener('click', (e) => { if (!e.target.closest('.share-dropdown')) document.querySelectorAll('.share-options').forEach(opt => opt.classList.remove('show')); });
+
+        // ==================== EXPORTAÇÃO CSV ====================
+        function exportToCSV() {
+            const headers = ['Termo', 'Descrição'];
+            const data = filteredData.map(i => [i.nome, i.descricao]);
+            let csv = headers.join(';') + '\n' + data.map(r => r.map(c => `"${(c||'').replace(/"/g,'""')}"`).join(';')).join('\n');
+            const blob = new Blob(['\uFEFF' + csv], {type: 'text/csv;charset=utf-8;'});
+            const link = document.createElement('a'); 
+            link.href = URL.createObjectURL(blob); 
+            link.download = 'glossario_transparencia_mg.csv'; 
+            link.click();
+        }
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape');
+            doc.setFontSize(14); doc.text('Glossário da Transparência - MG', 15, 15);
+            doc.setFontSize(9); doc.text(`Atualizado em: ${new Date().toLocaleString('pt-BR')}`, 15, 22);
+            const headers = [['Termo', 'Descrição']];
+            const data = filteredData.map(i => [i.nome, i.descricao]);
+            doc.autoTable({ 
+                head: headers, 
+                body: data, 
+                startY: 27, 
+                styles: { fontSize: 8 }, 
+                headStyles: { fillColor: [41,67,90] },
+                columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 'auto' } }
+            });
+            doc.save('glossario_transparencia_mg.pdf');
+        }
+
+        document.getElementById('exportCSV').addEventListener('click', exportToCSV);
+        document.getElementById('exportPDF').addEventListener('click', exportToPDF);
+
+        // ==================== LOADING ====================
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+        }
+
+        // ==================== INICIALIZAÇÃO ====================
+        carregarDados();
+    })();
+</script>
+</body>
+</html>
