@@ -16,19 +16,58 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
     
     <style>
-        /* ==================== MESMO TEMA DO DASHBOARD ANTERIOR ==================== */
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #EEEFF5;
-            padding-bottom: 15px;
-            overflow-x: hidden;
-        }
+        /* ==================== VARIÁVEIS DE CORES ==================== */
         :root {
             --primary-dark: #29435A;
             --primary-darker: #132837;
             --accent-red: #B93C42;
             --accent-bright: #DB233F;
             --background-light: #EEEFF5;
+        }
+
+        /* ==================== ESTILOS GERAIS COM REGRAS DE SCROLL ==================== */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--background-light);
+            padding-bottom: 15px;
+            overflow-y: hidden !important;
+            overflow-x: hidden !important;
+            min-height: auto !important;
+            height: auto !important;
+            position: relative;
+        }
+
+        html {
+            overflow-y: hidden !important;
+            height: auto !important;
+        }
+
+        .main-container {
+            height: auto !important;
+            min-height: auto !important;
+            overflow: visible !important;
+            position: relative;
+        }
+
+        .container.dashboard-spacing {
+            overflow: visible !important;
+            height: auto !important;
+            min-height: auto !important;
+            position: relative;
+        }
+
+        .tab-content {
+            overflow: visible !important;
+            height: auto !important;
+            min-height: auto !important;
+            position: relative;
+        }
+
+        .table-container {
+            height: auto !important;
+            min-height: auto !important;
+            overflow: visible !important;
+            position: relative;
         }
 
         .dashboard-card {
@@ -47,6 +86,29 @@
             font-size: 15px;
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .filter-label i { 
+            font-size: 18px; 
+            color: var(--accent-red); 
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            height: 42px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 0 2px rgba(185, 60, 66, 0.15);
+            outline: none;
         }
 
         .btn-primary-custom {
@@ -60,6 +122,8 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            cursor: pointer;
+            height: 42px;
         }
 
         .btn-primary-custom:hover {
@@ -73,13 +137,15 @@
             background: white;
             border: 2px solid var(--primary-darker);
             color: var(--primary-darker);
-            padding: 8px 18px;
+            padding: 10px 20px;
             font-weight: 600;
             border-radius: 6px;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            cursor: pointer;
+            height: 42px;
         }
 
         .btn-secondary-custom:hover {
@@ -98,6 +164,8 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            cursor: pointer;
+            height: 38px;
         }
 
         .btn-export:hover {
@@ -147,11 +215,31 @@
             font-weight: 600;
             padding: 14px 10px;
             white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .table thead th:hover {
+            background-color: var(--primary-darker) !important;
+        }
+        
+        .sort-icon {
+            opacity: 0.8;
+            margin-left: 6px;
+            font-size: 14px;
+            transition: opacity 0.2s ease;
+            color: white;
+            vertical-align: middle;
+        }
+        
+        .table thead th:hover .sort-icon {
+            opacity: 1;
         }
 
         .table tbody td {
             font-size: 13px;
             vertical-align: middle;
+            padding: 12px 10px;
         }
 
         .descricao-cell {
@@ -176,22 +264,62 @@
             font-weight: 600;
         }
 
-        .share-dropdown { position: relative; display: inline-block; }
-        .share-options {
-            display: none; position: absolute; right: 0; top: 100%; background-color: white;
-            min-width: 220px; box-shadow: 0 8px 16px rgba(0,0,0,0.15); border-radius: 8px;
-            padding: 8px; z-index: 1000; border: 1px solid #dee2e6;
+        .data-atualizacao-box i {
+            font-size: 14px;
+            color: var(--accent-red);
         }
-        .share-options.show { display: block; }
-        .share-options a { display: flex; align-items: center; gap: 10px; padding: 10px 12px; color: var(--primary-dark); text-decoration: none; }
-        .share-options a:hover { background-color: #EEEFF5; color: var(--accent-red); }
+
+        .share-dropdown { 
+            position: relative; 
+            display: inline-block; 
+        }
+        
+        .share-options {
+            display: none; 
+            position: absolute; 
+            right: 0; 
+            top: 100%; 
+            background-color: white;
+            min-width: 220px; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15); 
+            border-radius: 8px;
+            padding: 8px; 
+            z-index: 1000; 
+            border: 1px solid #dee2e6;
+            margin-top: 5px;
+        }
+        
+        .share-options.show { 
+            display: block; 
+        }
+        
+        .share-options a { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            padding: 10px 12px; 
+            color: var(--primary-dark); 
+            text-decoration: none; 
+            font-size: 14px;
+        }
+        
+        .share-options a:hover { 
+            background-color: #EEEFF5; 
+            color: var(--accent-red); 
+        }
+        
+        .share-options a i { 
+            font-size: 18px; 
+            width: 20px; 
+            text-align: center; 
+        }
 
         .intro-text {
             background: white;
             border-radius: 10px;
             padding: 20px 25px;
             box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             border-left: 5px solid var(--primary-dark);
             font-size: 14px;
             text-align: justify;
@@ -206,145 +334,163 @@
             font-size: 12px;
             font-weight: 600;
         }
+
+        /* ==================== PAGINAÇÃO (COR PRIMÁRIA) ==================== */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: white;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .pagination-info {
+            font-size: 13px;
+            color: #6c757d;
+        }
+        
+        .pagination .page-link {
+            color: var(--primary-dark);
+            border-color: #dee2e6;
+        }
+        
+        .pagination .page-link:hover {
+            color: var(--accent-red);
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            color: white;
+        }
+        
+        .items-per-page {
+            width: 70px;
+            border: 2px solid var(--primary-dark) !important;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 12px;
+            background-color: white;
+            color: var(--primary-dark);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Loading spinner */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .mt-30 {
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container dashboard-spacing py-3">
+<div class="main-container">
+    <div class="container dashboard-spacing py-3">
 
-    <!-- ==================== MENU DE NAVEGAÇÃO ==================== -->
-    <div class="nav-tabs-container">
-        <ul class="nav nav-tabs" id="glossarioTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista" type="button" role="tab">
-                    <i class="material-icons">menu_book</i> Lista Completa
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="estatisticas-tab" data-bs-toggle="tab" data-bs-target="#estatisticas" type="button" role="tab">
-                    <i class="material-icons">insights</i> Estatísticas
-                </button>
-            </li>
-        </ul>
-    </div>
-
-    <!-- ==================== DATA DE ATUALIZAÇÃO ==================== -->
-    <div class="d-flex justify-content-start mb-3">
-        <div class="data-atualizacao-box">
-            <i class="material-icons">update</i> Atualizado em: <span id="data-atualizacao-header">Carregando...</span>
+        <!-- ==================== TEXTO INTRODUTÓRIO ==================== -->
+        <div class="intro-text">
+            <p style="margin:0; line-height:1.7;">
+                <i class="material-icons me-2" style="color: var(--accent-red); vertical-align: middle;">info</i>
+                Este glossário reúne os principais termos e conceitos utilizados nos portais de transparência, orçamento público, licitações, contratos e gestão governamental. As definições foram elaboradas com base em fontes oficiais como Tesouro Nacional, Câmara dos Deputados e legislação vigente. Utilize a busca ou o filtro por letra para navegar pelos verbetes.
+            </p>
         </div>
-    </div>
 
-    <!-- ==================== TEXTO INTRODUTÓRIO ==================== -->
-    <div class="intro-text">
-        <p style="margin:0; line-height:1.7;">
-            <i class="material-icons me-2" style="color: var(--accent-red); vertical-align: middle;">info</i>
-            Este glossário reúne os principais termos e conceitos utilizados nos portais de transparência, orçamento público, licitações, contratos e gestão governamental. As definições foram elaboradas com base em fontes oficiais como Tesouro Nacional, Câmara dos Deputados e legislação vigente. Utilize a busca ou o filtro por letra para navegar pelos verbetes.
-        </p>
-    </div>
-
-    <!-- ==================== CONTEÚDO DAS ABAS ==================== -->
-    <div class="tab-content" id="glossarioTabsContent">
-        
-        <!-- ==================== ABA 1: LISTA COMPLETA ==================== -->
-        <div class="tab-pane fade show active" id="lista" role="tabpanel">
-            
-            <!-- Filtros -->
-            <div class="dashboard-card">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-4">
-                        <label class="filter-label">Filtrar por letra inicial</label>
-                        <select class="form-select" id="filtroLetra">
-                            <option value="all">Todas as letras (A-Z)</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="filter-label">Buscar termo ou descrição</label>
-                        <input type="text" class="form-control" id="filtroTexto" placeholder="Ex: licitação, orçamento, empenho...">
-                    </div>
-                    <div class="col-md-2 d-flex gap-2">
-                        <button class="btn-primary-custom" id="btnPesquisar">
-                            <i class="material-icons">search</i>
-                        </button>
-                        <button class="btn-secondary-custom" id="btnLimpar">
-                            <i class="material-icons">clear</i>
-                        </button>
-                    </div>
-                </div>
+        <!-- ==================== DATA DE ATUALIZAÇÃO (APÓS EXPLICAÇÃO) ==================== -->
+        <div class="d-flex justify-content-start mb-4">
+            <div class="data-atualizacao-box">
+                <i class="material-icons">update</i> Atualizado em: <span id="data-atualizacao-header">Carregando...</span>
             </div>
+        </div>
 
-            <!-- barra de ações: export, compartilhar, itens por página -->
-            <div class="d-flex flex-wrap justify-content-between align-items-center bg-white p-3 rounded-3 shadow-sm mb-3">
-                <div class="d-flex gap-2">
-                    <button class="btn-export" id="exportCSV"><i class="material-icons me-1">description</i> CSV</button>
-                    <button class="btn-export" id="exportPDF"><i class="material-icons me-1">print</i> PDF</button>
-                    <div class="share-dropdown">
-                        <button class="btn-export" id="shareButton"><i class="material-icons me-1">share</i> Compartilhar</button>
-                        <div class="share-options" id="shareOptions">
-                            <a href="#" onclick="copiarLink(event)"><i class="fas fa-link"></i> Copiar Link</a>
-                            <a href="#" onclick="compartilharFacebook(event)"><i class="fab fa-facebook-f"></i> Facebook</a>
-                            <a href="#" onclick="compartilharTwitter(event)"><i class="fab fa-twitter"></i> Twitter</a>
-                            <a href="#" onclick="compartilharWhatsApp(event)"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <!-- ==================== CONTEÚDO ==================== -->
+        <div class="tab-content" id="glossarioTabsContent">
+            
+            <!-- ==================== ABA 1: LISTA COMPLETA ==================== -->
+            <div class="tab-pane fade show active" id="lista" role="tabpanel">
+                
+                <!-- Filtros - Primeira linha -->
+                <div class="dashboard-card">
+                    <div class="row g-3">
+                        <div class="col-md-5">
+                            <label class="filter-label"><i class="material-icons">filter_list</i> Filtrar por letra inicial</label>
+                            <select class="form-select" id="filtroLetra">
+                                <option value="all">Todas as letras (A-Z)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-7">
+                            <label class="filter-label"><i class="material-icons">search</i> Buscar termo ou descrição</label>
+                            <input type="text" class="form-control" id="filtroTexto" placeholder="Ex: licitação, orçamento, empenho...">
+                        </div>
+                    </div>
+                    
+                    <!-- Botões na segunda linha -->
+                    <div class="row mt-3">
+                        <div class="col-12 d-flex gap-2">
+                            <button class="btn-primary-custom" id="btnPesquisar">
+                                <i class="material-icons">search</i> Pesquisar
+                            </button>
+                            <button class="btn-secondary-custom" id="btnLimpar">
+                                <i class="material-icons">clear</i> Limpar Filtros
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <span style="font-size:12px; font-weight:600; color:var(--primary-dark);">Itens p/ página:</span>
-                        <select id="itemsPerPage" class="form-select form-select-sm" style="width:70px; border:2px solid var(--primary-dark);">
-                            <option value="10">10</option><option value="25">25</option><option value="50" selected>50</option><option value="100">100</option>
-                        </select>
-                    </div>
-                    <span class="badge-termos" id="totalRegistros">0 termos</span>
-                </div>
-            </div>
 
-            <!-- Tabela -->
-            <div class="table-container bg-white rounded-3 shadow-sm">
-                <div class="table-fixed-header-container">
-                    <table class="table table-hover" style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th style="width: 25%;">Termo</th>
-                                <th style="width: 75%;">Descrição</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabelaGlossarioBody"></tbody>
-                    </table>
+                <!-- barra de ações: export, compartilhar, itens por página -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center bg-white p-3 rounded-3 shadow-sm mb-3">
+                    <div class="d-flex gap-2">
+                        <button class="btn-export" id="exportCSV"><i class="material-icons me-1">description</i> CSV</button>
+                        <button class="btn-export" id="exportPDF"><i class="material-icons me-1">print</i> PDF</button>
+                        <div class="share-dropdown">
+                            <button class="btn-export" id="shareButton"><i class="material-icons me-1">share</i> Compartilhar</button>
+                            <div class="share-options" id="shareOptions">
+                                <a href="#" onclick="copiarLink(event)"><i class="fas fa-link"></i> Copiar Link</a>
+                                <a href="#" onclick="compartilharFacebook(event)"><i class="fab fa-facebook-f"></i> Facebook</a>
+                                <a href="#" onclick="compartilharTwitter(event)"><i class="fab fa-twitter"></i> Twitter</a>
+                                <a href="#" onclick="compartilharWhatsApp(event)"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span style="font-size:12px; font-weight:600; color:var(--primary-dark);">Itens p/ página:</span>
+                            <select id="itemsPerPage" class="form-select form-select-sm" style="width:70px; border:2px solid var(--primary-dark);">
+                                <option value="10">10</option><option value="25">25</option><option value="50" selected>50</option><option value="100">100</option>
+                            </select>
+                        </div>
+                        <span class="badge-termos" id="totalRegistros">0 termos</span>
+                    </div>
                 </div>
-                <!-- Paginação -->
-                <div class="d-flex justify-content-between align-items-center p-3 border-top">
-                    <div class="pagination-info" id="paginationInfo">Mostrando 0-0 de 0 registros</div>
-                    <nav><ul class="pagination mb-0" id="paginationGlossario"></ul></nav>
-                </div>
-            </div>
-        </div>
 
-        <!-- ==================== ABA 2: ESTATÍSTICAS ==================== -->
-        <div class="tab-pane fade" id="estatisticas" role="tabpanel">
-            <div class="row">
-                <!-- card total -->
-                <div class="col-md-4 mb-3">
-                    <div class="bg-white p-4 rounded-3 shadow-sm h-100">
-                        <h5 class="fw-bold mb-3"><i class="material-icons me-2" style="color:var(--accent-red);">abc</i> Total de termos</h5>
-                        <span class="display-4" id="statsTotal">0</span>
-                        <p class="text-muted mt-2">verbetes cadastrados</p>
+                <!-- Tabela com ordenação -->
+                <div class="table-container bg-white rounded-3 shadow-sm">
+                    <div class="table-fixed-header-container">
+                        <table class="table table-hover" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%;" onclick="ordenarPor('nome')">
+                                        Termo <span class="sort-icon" id="sortIconNome">▼</span>
+                                    </th>
+                                    <th style="width: 75%;" onclick="ordenarPor('descricao')">
+                                        Descrição <span class="sort-icon" id="sortIconDescricao">▼</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabelaGlossarioBody"></tbody>
+                        </table>
                     </div>
-                </div>
-                <!-- card primeiras letras -->
-                <div class="col-md-8 mb-3">
-                    <div class="bg-white p-4 rounded-3 shadow-sm h-100">
-                        <h5 class="fw-bold mb-3"><i class="material-icons me-2" style="color:var(--accent-red);">sort_by_alpha</i> Distribuição por letra inicial</h5>
-                        <div id="letrasContainer" class="d-flex flex-wrap gap-2" style="max-height: 200px; overflow-y: auto;"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- últimos termos adicionados / amostra -->
-            <div class="row mt-3">
-                <div class="col-12">
-                    <div class="bg-white p-4 rounded-3 shadow-sm">
-                        <h5 class="fw-bold mb-3"><i class="material-icons me-2" style="color:var(--accent-red);">history</i> Exemplos de verbetes</h5>
-                        <div class="row" id="exemplosContainer"></div>
+                    <!-- Paginação -->
+                    <div class="pagination-container">
+                        <div class="pagination-info" id="paginationInfo">Mostrando 0-0 de 0 registros</div>
+                        <nav><ul class="pagination mb-0" id="paginationGlossario"></ul></nav>
                     </div>
                 </div>
             </div>
@@ -370,9 +516,127 @@
         let filteredData = [];
         let currentPage = 1;
         let itemsPerPage = 50;
+        let sortColumn = 'nome';
+        let sortOrder = 'asc';
 
-        // elemento data atualização
-        document.getElementById('data-atualizacao-header').innerText = new Date().toLocaleDateString('pt-BR') + ' ' + new Date().toLocaleTimeString('pt-BR');
+        // ==================== FUNÇÕES DE INICIALIZAÇÃO ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            setupAtualizacaoData();
+            removeAllScrollIssues();
+            carregarDados();
+            console.log('Glossário carregado com sucesso!');
+        });
+
+        function removeAllScrollIssues() {
+            console.log('Removendo problemas de scroll duplo...');
+            const elements = [
+                document.body,
+                document.documentElement,
+                document.querySelector('.main-container'),
+                document.querySelector('.container.dashboard-spacing'),
+                document.querySelector('.tab-content'),
+                ...document.querySelectorAll('.tab-pane'),
+                ...document.querySelectorAll('.table-container'),
+                ...document.querySelectorAll('.row'),
+                ...document.querySelectorAll('.col'),
+                ...document.querySelectorAll('.container'),
+                ...document.querySelectorAll('.container-fluid')
+            ];
+            
+            elements.forEach(el => {
+                if (el && el.style) {
+                    el.style.overflowY = 'visible';
+                    el.style.overflowX = 'visible';
+                    el.style.overflow = 'visible';
+                }
+            });
+            
+            document.body.classList.remove('overflow-auto');
+            document.documentElement.classList.remove('overflow-auto');
+            document.documentElement.style.height = 'auto';
+            document.body.style.height = 'auto';
+        }
+
+        function iframeUpdateHeight() {
+            console.log('Atualizando altura do iframe...');
+            document.body.style.display = 'none';
+            document.body.offsetHeight;
+            document.body.style.display = '';
+            
+            const html = document.documentElement;
+            const body = document.body;
+            const scrollHeight = Math.max(
+                body.scrollHeight,
+                html.scrollHeight,
+                body.offsetHeight,
+                html.offsetHeight
+            );
+            
+            const finalHeight = scrollHeight + 10;
+            console.log('Altura calculada:', finalHeight);
+            
+            try {
+                window.parent.postMessage({ iframeHeight: finalHeight }, '*');
+            } catch (error) {
+                // Ignora erro se não estiver em iframe
+            }
+            
+            return finalHeight;
+        }
+
+        function setupAtualizacaoData() {
+            const now = new Date();
+            const dataFormatada = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR');
+            const elementoData = document.getElementById('data-atualizacao-header');
+            if (elementoData) {
+                elementoData.textContent = dataFormatada;
+            }
+            console.log('Data de atualização definida:', dataFormatada);
+        }
+
+        function setupEventListeners() {
+            window.addEventListener('click', (e) => {
+                if (!e.target.closest('.share-dropdown')) {
+                    document.querySelectorAll('.share-options').forEach(opt => opt.classList.remove('show'));
+                }
+            });
+
+            document.getElementById('btnPesquisar').addEventListener('click', aplicarFiltros);
+            document.getElementById('btnLimpar').addEventListener('click', limparFiltros);
+            
+            document.getElementById('itemsPerPage').addEventListener('change', function(e) {
+                itemsPerPage = parseInt(e.target.value);
+                currentPage = 1;
+                renderTabela();
+                setTimeout(iframeUpdateHeight, 100);
+            });
+        }
+
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.style.display = show ? 'flex' : 'none';
+            }
+        }
+
+        function showError(message) {
+            const container = document.querySelector('.main-container');
+            if (!container) return;
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger alert-dismissible fade show';
+            errorDiv.innerHTML = `
+                <i class="material-icons me-2" style="vertical-align: middle;">warning</i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            container.prepend(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
 
         // ==================== CARREGAR DADOS DO GITHUB ====================
         async function carregarDados() {
@@ -399,14 +663,15 @@
                             }));
                         
                         filteredData = [...glossarioData];
+                        aplicarOrdenacao();
                         popularFiltroLetra();
                         renderTabela();
-                        atualizarEstatisticas();
                         showLoading(false);
+                        setTimeout(iframeUpdateHeight, 500);
                     },
                     error: function(err) {
                         console.error('Erro no parse:', err);
-                        fallbackData(); // em caso de erro, usa dados mínimos de exemplo
+                        fallbackData();
                     }
                 });
             } catch (error) {
@@ -423,8 +688,8 @@
             filteredData = [...glossarioData];
             popularFiltroLetra();
             renderTabela();
-            atualizarEstatisticas();
             showLoading(false);
+            setTimeout(iframeUpdateHeight, 500);
         }
 
         // ==================== POPULAR FILTRO LETRA ====================
@@ -432,7 +697,7 @@
             const letrasSet = new Set();
             glossarioData.forEach(item => {
                 if (item.nome && item.nome.length > 0) {
-                    letra = item.nome.charAt(0).toUpperCase();
+                    let letra = item.nome.charAt(0).toUpperCase();
                     if (letra.match(/[A-Z]/)) letrasSet.add(letra);
                 }
             });
@@ -447,10 +712,76 @@
             });
         }
 
+        // ==================== ORDENAÇÃO ====================
+        window.ordenarPor = function(coluna) {
+            if (sortColumn === coluna) {
+                sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = coluna;
+                sortOrder = 'asc';
+            }
+            
+            // Atualizar ícones
+            document.getElementById('sortIconNome').innerHTML = sortColumn === 'nome' ? (sortOrder === 'asc' ? '↑' : '↓') : '▼';
+            document.getElementById('sortIconDescricao').innerHTML = sortColumn === 'descricao' ? (sortOrder === 'asc' ? '↑' : '↓') : '▼';
+            
+            aplicarOrdenacao();
+            renderTabela();
+            setTimeout(iframeUpdateHeight, 100);
+        };
+
+        function aplicarOrdenacao() {
+            filteredData.sort((a, b) => {
+                let valA = a[sortColumn] || '';
+                let valB = b[sortColumn] || '';
+                
+                valA = valA.toLowerCase();
+                valB = valB.toLowerCase();
+                
+                if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
+                if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        // ==================== FILTROS ====================
+        function aplicarFiltros() {
+            const letraSel = document.getElementById('filtroLetra').value;
+            const texto = document.getElementById('filtroTexto').value.toLowerCase();
+            
+            filteredData = glossarioData.filter(item => {
+                if (letraSel !== 'all') {
+                    if (!item.nome || item.nome.charAt(0).toUpperCase() !== letraSel) return false;
+                }
+                if (texto) {
+                    const nomeMatch = item.nome && item.nome.toLowerCase().includes(texto);
+                    const descMatch = item.descricao && item.descricao.toLowerCase().includes(texto);
+                    if (!nomeMatch && !descMatch) return false;
+                }
+                return true;
+            });
+            
+            aplicarOrdenacao();
+            currentPage = 1;
+            renderTabela();
+            setTimeout(iframeUpdateHeight, 200);
+        }
+
+        function limparFiltros() {
+            document.getElementById('filtroLetra').value = 'all';
+            document.getElementById('filtroTexto').value = '';
+            filteredData = [...glossarioData];
+            aplicarOrdenacao();
+            currentPage = 1;
+            renderTabela();
+            setTimeout(iframeUpdateHeight, 200);
+        }
+
         // ==================== RENDERIZAÇÃO DA TABELA ====================
         function renderTabela() {
             const tbody = document.getElementById('tabelaGlossarioBody');
             if (!tbody) return;
+            
             const total = filteredData.length;
             const start = (currentPage - 1) * itemsPerPage;
             const end = Math.min(start + itemsPerPage, total);
@@ -485,105 +816,40 @@
             if (page < 1 || page > totalPages) return;
             currentPage = page;
             renderTabela();
+            setTimeout(iframeUpdateHeight, 100);
         };
-
-        // ==================== FILTROS ====================
-        function aplicarFiltros() {
-            const letraSel = document.getElementById('filtroLetra').value;
-            const texto = document.getElementById('filtroTexto').value.toLowerCase();
-            
-            filteredData = glossarioData.filter(item => {
-                if (letraSel !== 'all') {
-                    if (!item.nome || item.nome.charAt(0).toUpperCase() !== letraSel) return false;
-                }
-                if (texto) {
-                    const nomeMatch = item.nome && item.nome.toLowerCase().includes(texto);
-                    const descMatch = item.descricao && item.descricao.toLowerCase().includes(texto);
-                    if (!nomeMatch && !descMatch) return false;
-                }
-                return true;
-            });
-            
-            currentPage = 1;
-            renderTabela();
-            // atualiza estatísticas se a aba estatísticas estiver ativa
-            if (document.getElementById('estatisticas-tab').classList.contains('active')) atualizarEstatisticas();
-        }
-
-        document.getElementById('btnPesquisar').addEventListener('click', aplicarFiltros);
-        document.getElementById('btnLimpar').addEventListener('click', function() {
-            document.getElementById('filtroLetra').value = 'all';
-            document.getElementById('filtroTexto').value = '';
-            aplicarFiltros();
-        });
-
-        document.getElementById('itemsPerPage').addEventListener('change', function(e) {
-            itemsPerPage = parseInt(e.target.value);
-            currentPage = 1;
-            renderTabela();
-        });
-
-        // ==================== ESTATÍSTICAS ====================
-        function atualizarEstatisticas() {
-            const total = glossarioData.length;
-            document.getElementById('statsTotal').innerText = total;
-
-            // distribuição por letra
-            const letrasMap = {};
-            glossarioData.forEach(item => {
-                if (item.nome && item.nome.length > 0) {
-                    letra = item.nome.charAt(0).toUpperCase();
-                    if (letra.match(/[A-Z]/)) letrasMap[letra] = (letrasMap[letra] || 0) + 1;
-                }
-            });
-            const sortedLetras = Object.keys(letrasMap).sort();
-            const containerLetras = document.getElementById('letrasContainer');
-            containerLetras.innerHTML = sortedLetras.map(letra => 
-                `<span class="badge bg-secondary p-2" style="font-size:14px;">${letra}: ${letrasMap[letra]}</span>`
-            ).join('');
-
-            // 6 exemplos aleatórios
-            const exemplos = glossarioData.slice(0, 6); // pega os primeiros como amostra
-            const containerEx = document.getElementById('exemplosContainer');
-            containerEx.innerHTML = exemplos.map(item => `
-                <div class="col-md-4 col-6 mb-3">
-                    <div class="p-3 border rounded h-100" style="background:#f9f9fc;">
-                        <strong>${item.nome}</strong>
-                        <p class="small text-muted mt-2" style="max-height:80px; overflow:hidden;">${item.descricao.substring(0,80)}…</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        document.getElementById('estatisticas-tab').addEventListener('click', function() {
-            setTimeout(atualizarEstatisticas, 100);
-        });
 
         // ==================== COMPARTILHAMENTO ====================
         window.toggleShare = function() {
             document.getElementById('shareOptions').classList.toggle('show');
         };
+        
         window.copiarLink = function(e) { 
             e.preventDefault(); 
             navigator.clipboard.writeText(window.location.href); 
             alert('Link copiado!'); 
             document.getElementById('shareOptions').classList.remove('show'); 
         };
+        
         window.compartilharFacebook = function(e){ 
             e.preventDefault(); 
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`); 
         };
+        
         window.compartilharTwitter = function(e){ 
             e.preventDefault(); 
             window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}`); 
         };
+        
         window.compartilharWhatsApp = function(e){ 
             e.preventDefault(); 
             window.open(`https://wa.me/?text=${encodeURIComponent(window.location.href)}`); 
         };
 
-        document.getElementById('shareButton')?.addEventListener('click', (e) => { e.preventDefault(); toggleShare(); });
-        window.addEventListener('click', (e) => { if (!e.target.closest('.share-dropdown')) document.querySelectorAll('.share-options').forEach(opt => opt.classList.remove('show')); });
+        document.getElementById('shareButton')?.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            toggleShare(); 
+        });
 
         // ==================== EXPORTAÇÃO CSV ====================
         function exportToCSV() {
@@ -595,6 +861,7 @@
             link.href = URL.createObjectURL(blob); 
             link.download = 'glossario_transparencia_mg.csv'; 
             link.click();
+            setTimeout(iframeUpdateHeight, 200);
         }
 
         function exportToPDF() {
@@ -613,18 +880,11 @@
                 columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 'auto' } }
             });
             doc.save('glossario_transparencia_mg.pdf');
+            setTimeout(iframeUpdateHeight, 200);
         }
 
         document.getElementById('exportCSV').addEventListener('click', exportToCSV);
         document.getElementById('exportPDF').addEventListener('click', exportToPDF);
-
-        // ==================== LOADING ====================
-        function showLoading(show) {
-            document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
-        }
-
-        // ==================== INICIALIZAÇÃO ====================
-        carregarDados();
     })();
 </script>
 </body>
